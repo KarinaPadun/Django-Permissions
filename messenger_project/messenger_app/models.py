@@ -1,4 +1,6 @@
 from django.contrib.auth.models import User, Group
+from django.db import models
+from django.contrib.contenttypes.models import ContentType
 
 class Chat(models.Model):
     name = models.CharField(max_length=255)
@@ -16,3 +18,13 @@ class Message(models.Model):
 
     def has_permission(self, user):
         return self.author == user or user.is_superuser
+
+class LogEntry(models.Model):
+    user = models.ForeignKey(User, on_delete=models.CASCADE)
+    action = models.CharField(max_length=255)
+    content_type = models.ForeignKey(ContentType, on_delete=models.CASCADE)
+    object_id = models.PositiveIntegerField()
+    timestamp = models.DateTimeField(auto_now_add=True)
+
+    def __str__(self):
+        return f"{self.user} - {self.action} - {self.content_type} - {self.object_id}"
