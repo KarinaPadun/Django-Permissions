@@ -23,10 +23,10 @@ class FileListView(ListView):
     template_name = 'file_list.html'
 
 
-
 class FileDetailView(DetailView):
     model = File
     template_name = 'file_detail.html'
+
 
 class FileUpdateView(UpdateView):
     model = File
