@@ -1,0 +1,14 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<h1>{{ file.name }}</h1>
+{% if file.content_type.startswith('text/') %}
+<form action="{% url 'file_edit' file.pk %}" method="post">
+{% csrf_token %}
+<p>{{ file.content }}</p>
+<input type="submit" value="Сохранить">
+</form>
+{% else %}
+<p>Файл не является текстовым.</p>
+{% endif %}
+{% endblock %}
