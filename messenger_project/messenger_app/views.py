@@ -6,6 +6,43 @@ from django.views.generic import DetailView, UpdateView, CreateView
 from .models import Chat, Message
 from .mixins import LoginRequiredMixin, ChatPermissionMixin, MessagePermissionMixin, FormValidMixin
 
+from django.views.generic import CreateView
+from django.views.generic import ListView
+from django.views.generic import DetailView, UpdateView
+from .models import File
+
+
+class FileCreateView(CreateView):
+    model = File
+    fields = ['name', 'file']
+    success_url = '/'
+
+
+class FileListView(ListView):
+    model = File
+    template_name = 'file_list.html'
+
+
+
+class FileDetailView(DetailView):
+    model = File
+    template_name = 'file_detail.html'
+
+class FileUpdateView(UpdateView):
+    model = File
+    fields = ['content']
+    template_name = 'file_edit.html'
+
+    def get_form(self, **kwargs):
+        form = super().get_form(**kwargs)
+        if self.object.content_type.startswith('text/'):
+            form.fields['content'].widget = forms.Textarea()
+        return form
+
+
+
+
+
 @login_required
 def chat_list(request):
     chats = Chat.objects.filter(users=request.user)
