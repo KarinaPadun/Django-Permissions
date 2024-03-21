@@ -1,5 +1,19 @@
-from django.contrib.auth.signals import user_logged_in
 from .models import Message
+from django.contrib.auth.signals import user_logged_in, user_logged_out
+from .models import UserStatus
+
+def user_logged_in_handler(sender, user, **kwargs):
+    user_status = UserStatus.objects.get_or_create(user=user)[0]
+    user_status.status = True
+    user_status.save()
+
+def user_logged_out_handler(sender, user, **kwargs):
+    user_status = UserStatus.objects.get(user=user)
+    user_status.status = False
+    user_status.save()
+
+user_logged_in.connect(user_logged_in_handler)
+user_logged_out.connect(user_logged_out_handler)
 
 def log_user_login(sender, user, request, **kwargs):
     LogEntry.objects.create(
