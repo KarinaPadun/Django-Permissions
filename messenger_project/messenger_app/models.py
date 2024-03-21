@@ -1,6 +1,11 @@
 from django.contrib.auth.models import User, Group
 from django.db import models
 from django.contrib.contenttypes.models import ContentType
+from django.contrib.auth.models import User
+
+class UserStatus(models.Model):
+    user = models.OneToOneField(User, on_delete=models.CASCADE)
+    status = models.BooleanField(default=False)
 
 class File(models.Model):
     name = models.CharField(max_length=255)
