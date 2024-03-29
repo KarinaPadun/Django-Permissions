@@ -1,0 +1,16 @@
+{% extends 'base.html' %}
+
+{% block content %}
+    <h1>{{ chat.name }}</h1>
+    <ul>
+        {% for message in messages %}
+            <li>{{ message.author.username }}: {{ message.content }} - {{ message.timestamp }}</li>
+        {% endfor %}
+    </ul>
+
+    <form method="post" action="{% url 'messenger_app:chat_detail' chat.id %}">
+        {% csrf_token %}
+        {{ form.as_p }}
+        <button type="submit">Send</button>
+    </form>
+{% endblock %}
