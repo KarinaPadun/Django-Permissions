@@ -1,4 +1,0 @@
-schedule:
-  - schedule:
-      cron: "*/5 * * * *"
-      task: "messenger.tasks.log_messages"
